@@ -36,13 +36,13 @@ export const constantRouterMap = [
       component: () => import('@/views/dashboard/index')
     }]
   },
-  
+
   {
     path: '/teacher',
     component: Layout,
     redirect: '/teachr/list',
     name: '讲师管理',
-    meta: { title: '讲师管理', icon: 'el-icon-edit' },
+    meta: { title: '讲师管理', icon: 'example' },
     children: [
       {
         path: 'list',
@@ -55,6 +55,13 @@ export const constantRouterMap = [
         name: '添加讲师',
         component: () => import('@/views/edu/teacher/insert'),
         meta: { title: '添加讲师', icon: 'tree' }
+      },
+      {
+        path: 'update/:id',
+        name: '修改讲师',
+        component: () => import('@/views/edu/teacher/insert'),
+        meta: { title: '修改讲师', icon: 'tree' },
+        hidden: true
       }
     ]
   },

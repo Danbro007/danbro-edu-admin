@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app-container">
     <br />
     <!--查询表单-->
     <el-form :inline="true" class="demo-form-inline">
@@ -19,20 +19,17 @@
       <el-form-item label="添加时间">
         <el-date-picker
           v-model="teacherQuery.start"
-          type="datetime"
+          type="date"
           placeholder="选择开始时间"
           value-format="yyyy-MM-dd HH:mm:ss"
-          default-time="00:00:00"
         />
       </el-form-item>
       <el-form-item>
         <el-date-picker
-          class="demonstration"
           v-model="teacherQuery.end"
-          type="datetime"
+          type="date"
           placeholder="选择截止时间"
           value-format="yyyy-MM-dd HH:mm:ss"
-          default-time="00:00:00"
         />
       </el-form-item>
       <el-button type="primary" icon="el-icon-search" @click="getList()"
@@ -40,6 +37,8 @@
       >
       <el-button type="default" @click="resetData()">清空</el-button>
     </el-form>
+
+    <!--讲师列表-->
     <el-table :data="list" style="width: 100%" border>
       <el-table-column type="index" label="序号" width="80"></el-table-column>
       <el-table-column prop="name" label="姓名" width="120"></el-table-column>
@@ -48,7 +47,7 @@
           {{ scope.row.level == 1 ? "高级讲师" : "首席讲师" }}
         </template>
       </el-table-column>
-      <el-table-column prop="info" label="简介" width="380"></el-table-column>
+      <el-table-column prop="intro" label="简介" width="280"></el-table-column>
       <el-table-column
         prop="gmtCreate"
         label="添加时间"
@@ -57,14 +56,16 @@
       <el-table-column prop="sort" label="排序" width="80"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
+          <router-link :to="`/teacher/update/` +scope.row.id">
+            <el-button
+              size="mini"
+              type="primary"
+              >编辑</el-button
+            >
+          </router-link>
+
           <el-button
-            size="mid"
-            @click="handleEdit(scope.$index, scope.row)"
-            type="primary"
-            >编辑</el-button
-          >
-          <el-button
-            size="mid"
+            size="mini"
             type="danger"
             @click="handleDelete(scope.row.id)"
             >删除</el-button
@@ -72,6 +73,7 @@
         </template>
       </el-table-column>
     </el-table>
+    <!--分页器-->
     <el-pagination
       :current-page="page"
       :page-size="limit"
@@ -86,7 +88,7 @@
 
 
 <script>
-import * as teacher from "@/api/edu/teacher";
+import * as teacherAPI from "@/api/edu/teacher";
 
 export default {
   data() {
@@ -106,7 +108,7 @@ export default {
     // 获取讲师列表
     getList(page = 1) {
       this.page = page;
-      teacher
+      teacherAPI
         .pagingFindByCondition(this.page, this.limit, this.teacherQuery)
         .then((response) => {
           let data = response.data;
@@ -117,10 +119,12 @@ export default {
           console.log(error);
         });
     },
+    // 清空筛选框的数据
     resetData() {
       this.teacherQuery = {};
       this.getList();
     },
+    // 通过 ID 删除讲师
     handleDelete(id) {
       this.$confirm("此操作将永久删除该讲师记录, 是否继续?", "提示", {
         confirmButtonText: "确定",
@@ -128,7 +132,7 @@ export default {
         type: "warning",
       })
         .then(() => {
-          teacher
+          teacherAPI
             .deleteById(id)
             .then((response) => {
               this.$message({

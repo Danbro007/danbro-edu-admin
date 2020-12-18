@@ -10,7 +10,7 @@ export function pagingFindByCondition(current, limit, teacherQuery) {
 
 export function deleteById(id) {
     return request({
-        url: `teacherService/teacher/${id}`,
+        url: `edu/teacher/${id}`,
         method: 'delete'
     })
 }

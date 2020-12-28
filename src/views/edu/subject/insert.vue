@@ -68,10 +68,7 @@ export default {
     fileUploadError(response) {
       this.fileUploadBtnText = "导入失败";
       this.loading = false;
-      this.$message({
-        type: "error",
-        message: "导入失败",
-      });
+      this.$message.error("导入失败");
     },
   },
 };

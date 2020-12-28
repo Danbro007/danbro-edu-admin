@@ -38,3 +38,11 @@ export function getById(id) {
     })
 }
 
+
+export function getAllTeacher() {
+    return request({
+        url: `edu/teacher`,
+        method: 'get',
+    })
+}
+

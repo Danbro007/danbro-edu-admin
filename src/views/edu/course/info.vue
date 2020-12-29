@@ -132,14 +132,9 @@ export default {
       imageUrl: "",
       BASE_API: process.env.BASE_API, // 接口API地址
       courseInfo: {
-        teacherId: "",
-        subjectId: "",
         price: 0,
         lessonNum: 1,
-        subjectParentId: "",
-        title: "",
-        cover: "",
-        description: "",
+        subjectId:""
       },
       teacherList: [],
       subjectOneList: [],
@@ -155,11 +150,17 @@ export default {
     next() {
       this.$router.push({ path: "/course/chapter/" + this.courseId });
     },
-    saveOrUpdate(courseInfo) {
-      this.save(courseInfo);
+    saveOrUpdate() {
+      console.log(this.courseInfo)
+      if (this.courseInfo.id) {
+        console.log(this.courseInfo.cover)
+        this.update();
+      } else {
+        this.save();
+      }
     },
     // 保存课程信息
-    save(courseInfo) {
+    save() {
       courseAPI
         .insert(this.courseInfo)
         .then((response) => {
@@ -168,6 +169,19 @@ export default {
             message: "添加课程基本信息成功！",
           });
           this.courseId = response.data.courseId;
+          this.next();
+        })
+        .catch((error) => {});
+    },
+    // 修改课程详细
+    update() {
+      courseAPI
+        .update(this.courseInfo)
+        .then((response) => {
+          this.$message({
+            type: "success",
+            message: "修改课程基本信息成功！",
+          });
           this.next();
         })
         .catch((error) => {});
@@ -218,19 +232,14 @@ export default {
     },
     // 删除封面
     handleRemove() {
-      console.log(3);
-
       this.courseInfo.cover = "";
     },
     // 上传封面成功后的操作
     handleSuccess(res, file) {
-      console.log(2);
-
       this.courseInfo.cover = res.data.imgUrl;
     },
     handlePictureCardPreview(file) {
       this.dialogVisible = true;
-      console.log(1);
     },
     // 初始化页面，如果路由带有id说明时需要从数据库获取id相关的课程信息
     init() {
@@ -238,7 +247,6 @@ export default {
         this.courseId = this.$route.params.id;
         this.getCourseInfo();
       } else {
-        this.courseInfo = {};
         this.getAllSubject();
         this.getAllTeacher();
       }
@@ -249,7 +257,6 @@ export default {
         this.courseInfo = response.data.courseInfo;
         subjectAPI.getNestedTreeList().then((response) => {
           this.subjectOneList = response.data.items;
-          console.log(this.subjectOneList);
           for (let i = 0; i < this.subjectOneList.length; i++) {
             var oneSubject = this.subjectOneList[i];
             if (oneSubject.id == this.courseInfo.subjectParentId) {

@@ -8,6 +8,17 @@ export function insert(courseInfo) {
     })
 }
 
+export function update(courseInfo) {
+    return request({
+        url: `edu/course/info`,
+        method: 'put',
+        data: courseInfo
+    })
+}
+
+
+
+
 export function getCourseInfo(courseId) {
     return request({
         url: `edu/course/info/${courseId}`,

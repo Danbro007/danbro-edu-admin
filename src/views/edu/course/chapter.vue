@@ -93,7 +93,29 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="上传视频">
-          <!-- TODO -->
+          <el-upload
+            :on-success="handleVodUploadSuccess"
+            :on-remove="handleVodRemove"
+            :before-remove="beforeVodRemove"
+            :on-exceed="handleUploadExceed"
+            :file-list="fileList"
+            :action="BASE_API + '/vod/video'"
+            :limit="1"
+            :v-text="video.videoOriginalName"
+            class="upload-demo"
+          >
+            <el-button size="small" type="primary">上传视频</el-button>
+            <el-tooltip placement="right-end">
+              <div slot="content">
+                最大支持1G，<br />
+                支持3GP、ASF、AVI、DAT、DV、FLV、F4V、<br />
+                GIF、M2T、M4V、MJ2、MJPEG、MKV、MOV、MP4、<br />
+                MPE、MPG、MPEG、MTS、OGG、QT、RM、RMVB、<br />
+                SWF、TS、VOB、WMV、WEBM 等视频格式上传
+              </div>
+              <i class="el-icon-question" />
+            </el-tooltip>
+          </el-upload>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -120,9 +142,9 @@ export default {
       chapterList: [],
       video: {
         sort: 1,
-        title:"",
-        chapterId:"",
-        isFree:false
+        title: "",
+        chapterId: "",
+        isFree: false,
       },
       saveBtnDisabled: false,
       courseId: "",
@@ -137,6 +159,9 @@ export default {
       dialogVideoFormVisible: false,
       // 表单宽度
       formLabelWidth: "120px",
+
+      fileList: [], //上传文件列表
+      BASE_API: process.env.BASE_API,
     };
   },
   created() {
@@ -174,10 +199,13 @@ export default {
     update(node, data) {
       // 更新小节
       if (typeof data.children == "undefined") {
+        debugger
         this.dialogVideoFormVisible = true;
         this.video.title = data.label;
         this.video.id = data.id;
         this.video.sort = data.sort;
+        this.video.videoSourceId = data.videoSourceId;
+        this.videl.videoOriginalName = data.videoOriginalName;
         // 0 收费 1 免费
         this.video.isFree = data.isFree;
       }
@@ -209,7 +237,8 @@ export default {
             this.$message({
               type: "success",
               message: "修改章节成功！",
-            });s
+            });
+            s;
             this.dialogFormVisible = false;
             this.getChapterInfo(this.courseId);
           })
@@ -289,7 +318,7 @@ export default {
     },
     // 添加小节对话框
     openVideoForm(node, data) {
-      this.resetVideo()
+      this.resetVideo();
       this.video.chapterId = data.id;
       this.dialogVideoFormVisible = true;
     },
@@ -330,14 +359,41 @@ export default {
       this.chapter.title = "";
       this.chapter.sort = 1;
     },
-    resetVideo(){
+    resetVideo() {
       this.video = {
-        courseId:this.courseId,
-        title:"",
-        sort:1,
-        isFree:false
-      }
-    }
+        courseId: this.courseId,
+        title: "",
+        sort: 1,
+        isFree: false,
+      };
+    },
+    //视频上传成功的回调
+    handleVodUploadSuccess(response, file, fileList) {
+      this.video.videoSourceId = response.data.videoId;
+      this.video.videoOriginalName = file.name;
+    },
+    //视图上传多于一个视频
+    handleUploadExceed(files, fileList) {
+      this.$message.warning("想要重新上传视频，请先删除已上传的视频");
+    },
+    // 删除上传视频前的确定对话框
+    beforeVodRemove(file, fileList) {
+      return this.$confirm(`确定删除 ${file.name}?`);
+    },
+    // 执行删除视频的操作
+    handleVodRemove() {
+      videoAPI
+        .deleteVodVideo(this.video.videoSourceId)
+        .then((response) => {
+          this.$message({
+            type: "success",
+            message: "删除视频成功！",
+          });
+          this.video.videoSourceId = "";
+          this.video.videoOriginalName = "";
+        })
+        .catch((error) => {});
+    },
   },
 };
 </script>

@@ -8,10 +8,16 @@ export function insert(video) {
     })
 }
 
-
 export function deleteVideo(videoId) {
     return request({
         url: `edu/video/${videoId}`,
+        method: 'delete'
+    })
+}
+
+export function deleteVodVideo(videoId) {
+    return request({
+        url: `vod/video/${videoId}`,
         method: 'delete'
     })
 }
@@ -23,3 +29,4 @@ export function update(video) {
         data: video
     })
 }
+

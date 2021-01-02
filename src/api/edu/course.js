@@ -38,6 +38,13 @@ export function getCoursePublishInfoById(courseId) {
 }
 
 
+export function deleteById(courseId) {
+    return request({
+        url: `edu/course/${courseId}`,
+        method: 'delete'
+    })
+}
+
 export function updatePublish(publishStatus) {
     return request({
         url: `edu/course/publish/status`,
@@ -46,4 +53,12 @@ export function updatePublish(publishStatus) {
     })
 }
 
+
+export function pagingFindByCondition(current, limit, courseQuery) {
+    return request({
+        url: `edu/course/list/${current}/${limit}`,
+        method: 'post',
+        data: courseQuery
+    })
+}
 

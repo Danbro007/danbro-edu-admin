@@ -78,7 +78,7 @@
       <el-form-item label="课程封面">
         <el-upload
           :limit="1"
-          :action="BASE_API + '/upload/image/cover'"
+          :action="BASE_API + '/oss/image/cover'"
           list-type="picture-card"
           :on-preview="handlePictureCardPreview"
           :on-remove="handleRemove"
@@ -255,6 +255,7 @@ export default {
     getCourseInfo() {
       courseAPI.getCourseInfo(this.courseId).then((response) => {
         this.courseInfo = response.data.courseInfo;
+        
         subjectAPI.getNestedTreeList().then((response) => {
           this.subjectOneList = response.data.items;
           for (let i = 0; i < this.subjectOneList.length; i++) {

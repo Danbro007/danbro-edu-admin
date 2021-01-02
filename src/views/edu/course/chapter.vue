@@ -140,6 +140,7 @@ export default {
   data() {
     return {
       chapterList: [],
+      fileList: [],
       video: {
         sort: 1,
         title: "",
@@ -199,7 +200,15 @@ export default {
     update(node, data) {
       // 更新小节
       if (typeof data.children == "undefined") {
-        debugger
+        console.log(data)
+        if (
+          data.videoSourceId !== null &&
+          data.videoSourceId != ""
+        ) {
+          this.fileList = [
+            { name: data.videoOriginalName, id: data.videoSourceId },
+          ];
+        }
         this.dialogVideoFormVisible = true;
         this.video.title = data.label;
         this.video.id = data.id;
@@ -311,6 +320,7 @@ export default {
                 message: "删除小节成功！",
               });
               this.getChapterInfo(this.courseId);
+              this.fileList = [];
             })
             .catch(console.error());
         });
@@ -391,6 +401,7 @@ export default {
           });
           this.video.videoSourceId = "";
           this.video.videoOriginalName = "";
+          this.fileList = [];
         })
         .catch((error) => {});
     },

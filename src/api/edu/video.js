@@ -17,7 +17,7 @@ export function deleteVideo(videoId) {
 
 export function deleteVodVideo(videoId) {
     return request({
-        url: `vod/video/${videoId}`,
+        url: `edu/video/aliyun/${videoId}`,
         method: 'delete'
     })
 }

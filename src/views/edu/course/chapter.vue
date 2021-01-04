@@ -95,6 +95,7 @@
         <el-form-item label="上传视频">
           <el-upload
             :on-success="handleVodUploadSuccess"
+            :on-progress="handleVodUploadProcess"
             :on-remove="handleVodRemove"
             :before-remove="beforeVodRemove"
             :on-exceed="handleUploadExceed"
@@ -147,6 +148,8 @@ export default {
         chapterId: "",
         isFree: false,
       },
+      // 上传文件期间禁止使用确认按钮
+      saveVideoBtnDisabled:false,
       saveBtnDisabled: false,
       courseId: "",
       chapter: {
@@ -198,25 +201,25 @@ export default {
     },
     // 打开更新对话框
     update(node, data) {
+      this.resetVideo();
       // 更新小节
       if (typeof data.children == "undefined") {
-        console.log(data)
-        if (
-          data.videoSourceId !== null &&
-          data.videoSourceId != ""
-        ) {
+        console.log(data);
+        if (data.videoSourceId !== null && data.videoSourceId != "") {
           this.fileList = [
             { name: data.videoOriginalName, id: data.videoSourceId },
           ];
         }
+        // 0 收费 1 免费
+        this.video.isFree = data.isFree;
+        console.log(this.video)
         this.dialogVideoFormVisible = true;
         this.video.title = data.label;
         this.video.id = data.id;
         this.video.sort = data.sort;
         this.video.videoSourceId = data.videoSourceId;
-        this.videl.videoOriginalName = data.videoOriginalName;
-        // 0 收费 1 免费
-        this.video.isFree = data.isFree;
+        this.video.videoOriginalName = data.videoOriginalName;
+        
       }
       //更新章节
       else {
@@ -284,15 +287,8 @@ export default {
           type: "warning",
         }).then(() => {
           // 点击确定
-          const chapter = {};
-          chapter.id = data.id;
-          chapter.children = [];
-          for (let i = 0; i < data.children.length; i++) {
-            var video = data.children[i];
-            chapter.children.push(video.id);
-          }
           chapterAPI
-            .deleteChapter(chapter)
+            .deleteChapter(data.id)
             .then((response) => {
               this.$message({
                 type: "success",
@@ -328,6 +324,7 @@ export default {
     },
     // 添加小节对话框
     openVideoForm(node, data) {
+      this.fileList = [];
       this.resetVideo();
       this.video.chapterId = data.id;
       this.dialogVideoFormVisible = true;
@@ -381,6 +378,7 @@ export default {
     handleVodUploadSuccess(response, file, fileList) {
       this.video.videoSourceId = response.data.videoId;
       this.video.videoOriginalName = file.name;
+      this.saveVideoBtnDisabled = false;
     },
     //视图上传多于一个视频
     handleUploadExceed(files, fileList) {
@@ -393,7 +391,7 @@ export default {
     // 执行删除视频的操作
     handleVodRemove() {
       videoAPI
-        .deleteVodVideo(this.video.videoSourceId)
+        .deleteVodVideo(this.video.id)
         .then((response) => {
           this.$message({
             type: "success",
@@ -405,6 +403,9 @@ export default {
         })
         .catch((error) => {});
     },
+    handleVodUploadProcess(){
+      this.saveVideoBtnDisabled = true;
+    }
   },
 };
 </script>

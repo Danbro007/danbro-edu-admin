@@ -17,10 +17,9 @@ export function update(chapter) {
     })
 }
 
-export function deleteChapter(chapter) {
+export function deleteChapter(chapterId) {
     return request({
-        url: `edu/chapter`,
+        url: `edu/chapter/${chapterId}`,
         method: 'delete',
-        data:chapter
     })
 }

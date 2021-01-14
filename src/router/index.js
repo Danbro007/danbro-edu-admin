@@ -59,13 +59,13 @@ export const asyncRoutes = [
       {
         path: 'save',
         name: '添加讲师',  
-        component: () => import('@/views/edu/teacher/save'),
+        component: () => import('@/views/edu/teacher/insert'),
         meta: { title: '添加讲师', icon: 'tree' }
       },
       {
         path: 'edit/:id',   
         name: 'EduTeacherEdit',
-        component: () => import('@/views/edu/teacher/save'),
+        component: () => import('@/views/edu/teacher/insert'),
         meta: { title: '编辑讲师', noCache: true },
         hidden: true
       }
@@ -88,7 +88,7 @@ export const asyncRoutes = [
       {
         path: 'save',
         name: '添加课程分类',  
-        component: () => import('@/views/edu/subject/save'),
+        component: () => import('@/views/edu/subject/insert'),
         meta: { title: '添加课程分类', icon: 'tree' }
       }
     ]

@@ -6,7 +6,7 @@ export default {
   // 获取所有的权限
   getNestedTreeList() {
     return request({
-      url: `${api_name}`,
+      url: `${api_name}/all`,
       method: 'get'
     })
   },

@@ -50,7 +50,6 @@ export default {
 
     // 表单初始化
     init() {
-      debugger
       if (this.$route.params && this.$route.params.id) {
         const id = this.$route.params.id
         this.fetchDataById(id)
@@ -77,7 +76,7 @@ export default {
     saveData() {
       roleApi.save(this.role).then(response => {
         // debugger
-        if (response.success) {
+        if (response.isSuccess) {
           this.$message({
             type: 'success',
             message: response.message
@@ -91,7 +90,7 @@ export default {
     updateData() {
       // teacher数据的获取
       roleApi.updateById(this.role).then(response => {
-        if (response.success) {
+        if (response.isSuccess) {
           this.$message({
             type: 'success',
             message: response.message
@@ -104,8 +103,7 @@ export default {
     // 根据id查询记录
     fetchDataById(id) {
       roleApi.getById(id).then(response => {
-        debugger
-        this.role = response.data.item
+        this.role = response.data
       })
     }
 

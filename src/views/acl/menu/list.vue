@@ -172,7 +172,7 @@ export default {
   methods: {
     fetchNodeList() {
       menu.getNestedTreeList().then(response => {
-        if (response.success === true) {
+        if (response.isSuccess === true) {
           this.menuList = response.data.children
           console.log(this.menuList)
         }

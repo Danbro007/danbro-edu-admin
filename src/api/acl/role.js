@@ -6,9 +6,9 @@ export default {
   // 添加以及带分页的查询角色
   getPageList(page, limit, searchObj) {
     return request({
-      url: `${api_name}/${page}/${limit}`,
-      method: 'get',
-      params: searchObj // url查询字符串或表单键值对
+      url: `${api_name}/list/${page}/${limit}`,
+      method: 'post',
+      data: searchObj // url查询字符串或表单键值对
     })
   },
   // 获取角色基本信息

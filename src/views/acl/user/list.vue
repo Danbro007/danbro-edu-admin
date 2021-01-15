@@ -120,7 +120,7 @@ export default {
 
       user.getPageList(this.page, this.limit, this.searchObj).then(
         response => {
-          this.list = response.data.items
+          this.list = response.data.rows
           this.total = response.data.total
 
           // 数据加载并绑定成功
@@ -148,7 +148,7 @@ export default {
         return user.removeById(id)
       }).then((response) => {
         this.fetchData(this.page)
-        if (response.success) {
+        if (response.isSuccess) {
           this.$message({
             type: 'success',
             message: '删除成功!'
@@ -197,7 +197,7 @@ export default {
         return user.removeRows(idList)
       }).then((response) => {
         this.fetchData(this.page)
-        if (response.success) {
+        if (response.isSuccess) {
           this.$message({
             type: 'success',
             message: '删除成功!'

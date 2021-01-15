@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-input
       v-model="filterText"
-      placeholder="Filter keyword"
+      placeholder="查询关键字"
       style="margin-bottom: 30px"
     />
     <el-tree
@@ -31,6 +31,7 @@ export default {
   },
   watch: {
     filterText(val) {
+      debugger
       this.$refs.subjectTree.filter(val);
     },
   },
@@ -42,8 +43,8 @@ export default {
   methods: {
     fetchNodeList() {
       subjectAPI.getNestedTreeList().then((response) => {
-        if (response.success === true) {
-          this.subjectList = response.data.items;
+        if (response.isSuccess === true) {
+          this.subjectList = response.data;
         }
       });
     },

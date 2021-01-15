@@ -36,7 +36,7 @@ export default {
   // 查询角色的权限
   toAssign(roleId) {
     return request({
-      url: `${api_name}/${roleId}`,
+      url: `${api_name}/role/${roleId}`,
       method: 'get'
     })
   },

@@ -71,11 +71,12 @@ export default {
       },
       update(){
         this.saveBtnDisabled = true // 防止表单重复提交
+        console.log(this.checkedCities)
         var ids = this.checkedCities.join(",")
         console.log(ids)
         //修改权限
         userApi.saveAssign(this.userId, ids).then(response => {
-            if(response.success){
+            if(response.isSuccess){
               this.$message({
                 type:'success',
                 message:'保存成功'

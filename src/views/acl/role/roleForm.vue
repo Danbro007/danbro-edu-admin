@@ -42,7 +42,6 @@ export default {
     this.init()
   },
   methods: {
-
     init(){
       if (this.$route.params && this.$route.params.id) {
           this.roleId = this.$route.params.id
@@ -51,7 +50,7 @@ export default {
     },
     fetchDataById(roleId){
         menu.toAssign(roleId).then(response => {
-            this.data = response.data.children
+            this.data = response.data
             var jsonList = JSON.parse(JSON.stringify(this.data))
             var list = []
             this.getJsonToList(list, jsonList[0]['children'])
@@ -64,7 +63,7 @@ export default {
     getJsonToList(list, jsonList){
         //遍历这个集合对象，获取key的值
         for(var i = 0; i < jsonList.length; i++){
-            if(jsonList[i]['select'] == true && jsonList[i]['level'] == 4){
+            if(jsonList[i]['isSelected'] == true && jsonList[i]['level'] == 4){
                 list.push(jsonList[i]['id'])
             }
             if(jsonList[i]['children'] != null){ 
@@ -92,7 +91,7 @@ export default {
       //node_modules\element-ui\lib\element-ui.common.js
       //25348行修改源码
       menu.doAssign(this.roleId, ids).then(response => {
-          if(response.success){
+          if(response.isSuccess){
               this.$message({
                 type:'success',
                 message:'保存成功'

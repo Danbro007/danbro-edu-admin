@@ -41,11 +41,11 @@ export default {
     })
   },
   // 给角色分配权限
-  doAssign(roleId, permissionId) {
+  doAssign(roleId, permissions) {
     return request({
-      url: `${api_name}`,
+      url: `${api_name}/role`,
       method: "post",
-      params: { roleId, permissionId }
+      params: { roleId, permissions }
     })
   }
 }

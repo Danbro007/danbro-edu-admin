@@ -56,7 +56,7 @@ export default {
   methods: {
     previous() {
       console.log("previous");
-      this.$router.push({ path: "/course/chapter/" + this.courseId });
+      this.$router.push({ path: "/edu/course/chapter/" + this.courseId });
     },
     publish() {
       this.publishStatus.id = this.courseId;
@@ -68,7 +68,7 @@ export default {
             type: "success",
             message: "发布课程成功！",
           });
-          this.$router.push({ path: "/course/list" });
+          this.$router.push({ path: "/edu/course/list" });
         })
         .catch(console.error());
     },
@@ -81,7 +81,7 @@ export default {
     },
     fetchCoursePublishInfoById() {
       courseAPI.getCoursePublishInfoById(this.courseId).then((response) => {
-        this.coursePublish = response.data.coursePublish;
+        this.coursePublish = response.data;
       });
     },
   },

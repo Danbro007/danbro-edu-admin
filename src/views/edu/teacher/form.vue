@@ -48,7 +48,7 @@
           :width="300"
           :height="300"
           :key="imagecropperKey"
-          :url="BASE_API + '/upload/image/avatar'"
+          :url="BASE_API + '/oss/image/avatar'"
           field="file"
           @close="close"
           @crop-upload-success="cropSuccess"
@@ -99,7 +99,7 @@ export default {
     // 上传头像完成的函数
     cropSuccess(data) {
       this.imagecropperShow = false;
-      this.teacher.avatar = data.imgUrl;
+      this.teacher.avatar = data;
       // 上传成功后，重新打开上传组件时初始化组件，否则显示上一次的上传结果
       this.imagecropperKey = this.imagecropperKey + 1;
     },
@@ -138,7 +138,7 @@ export default {
             message: "添加成功!",
           });
           // 跳转页面
-          this.$router.push({ path: "/teacher/list" });
+          this.$router.push({ path: "/edu/teacher/list" });
         })
         .catch((error) => {
           this.$message({
@@ -152,7 +152,7 @@ export default {
       teacherAPI
         .getById(id)
         .then((response) => {
-          this.teacher = response.data.items;
+          this.teacher = response.data;
         })
         .catch((error) => {});
     },
@@ -166,7 +166,7 @@ export default {
             message: "修改成功!",
           });
           // 跳转页面
-          this.$router.push({ path: "/teacher/list" });
+          this.$router.push({ path: "/edu/teacher/list" });
         })
         .catch((error) => {
           this.$message.error("修改失败!");

@@ -56,12 +56,8 @@
       <el-table-column prop="sort" label="排序" width="80"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <router-link :to="`/teacher/update/` +scope.row.id">
-            <el-button
-              size="mini"
-              type="primary"
-              >编辑</el-button
-            >
+          <router-link :to="`/edu/teacher/edit/` + scope.row.id">
+            <el-button size="mini" type="primary">编辑</el-button>
           </router-link>
 
           <el-button

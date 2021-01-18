@@ -54,7 +54,7 @@
       ></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <router-link :to="`/course/info/` + scope.row.id">
+          <router-link :to="`/edu/course/info/` + scope.row.id">
             <el-button size="mini" type="primary">编辑</el-button>
           </router-link>
           <el-button

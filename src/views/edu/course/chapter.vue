@@ -175,12 +175,12 @@ export default {
     // 返回到课程信息页面
     previous() {
       console.log("previous");
-      this.$router.push({ path: "/course/info/" + this.courseId });
+      this.$router.push({ path: "/edu/course/info/" + this.courseId });
     },
     // 进入到确认页面
     next() {
       console.log("next");
-      this.$router.push({ path: "/course/publish/" + this.courseId });
+      this.$router.push({ path: "/edu/course/publish/" + this.courseId });
     },
     insert() {},
     // 初始化页面，如果路径上有Id说明是修改
@@ -195,7 +195,7 @@ export default {
       courseAPI
         .getChapterInfo(courseId)
         .then((response) => {
-          this.chapterList = response.data.chapters;
+          this.chapterList = response.data;
         })
         .catch((error) => {});
     },
@@ -203,16 +203,17 @@ export default {
     update(node, data) {
       this.resetVideo();
       // 更新小节
+      debugger
       if (typeof data.children == "undefined") {
-        console.log(data);
         if (data.videoSourceId !== null && data.videoSourceId != "") {
           this.fileList = [
             { name: data.videoOriginalName, id: data.videoSourceId },
           ];
-        }
+        }else{this.fileList = []}
         // 0 收费 1 免费
+        this.video = {},
+        this.video.courseId=this.courseId;
         this.video.isFree = data.isFree;
-        console.log(this.video)
         this.dialogVideoFormVisible = true;
         this.video.title = data.label;
         this.video.id = data.id;
@@ -371,12 +372,12 @@ export default {
         courseId: this.courseId,
         title: "",
         sort: 1,
-        isFree: false,
+        isFree: false,        
       };
     },
     //视频上传成功的回调
     handleVodUploadSuccess(response, file, fileList) {
-      this.video.videoSourceId = response.data.videoId;
+      this.video.videoSourceId = response.data;
       this.video.videoOriginalName = file.name;
       this.saveVideoBtnDisabled = false;
     },

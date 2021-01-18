@@ -148,7 +148,7 @@ export default {
   },
   methods: {
     next() {
-      this.$router.push({ path: "/course/chapter/" + this.courseId });
+      this.$router.push({ path: "/edu/course/chapter/" + this.courseId });
     },
     saveOrUpdate() {
       console.log(this.courseInfo)
@@ -254,10 +254,10 @@ export default {
     // 获取课程信息
     getCourseInfo() {
       courseAPI.getCourseInfo(this.courseId).then((response) => {
-        this.courseInfo = response.data.courseInfo;
+        this.courseInfo = response.data;
         
         subjectAPI.getNestedTreeList().then((response) => {
-          this.subjectOneList = response.data.items;
+          this.subjectOneList = response.data;
           for (let i = 0; i < this.subjectOneList.length; i++) {
             var oneSubject = this.subjectOneList[i];
             if (oneSubject.id == this.courseInfo.subjectParentId) {

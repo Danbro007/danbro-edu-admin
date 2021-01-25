@@ -41,7 +41,7 @@ export function getById(id) {
 // 获取所有讲师
 export function getAllTeacher() {
     return request({
-        url: `edu/teacher`,
+        url: `edu/teacher/list`,
         method: 'get',
     })
 }

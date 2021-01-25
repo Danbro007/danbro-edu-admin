@@ -49,7 +49,7 @@
       <!-- 课程讲师 TODO -->
       <!-- 课程讲师 -->
       <el-form-item label="课程讲师">
-        <el-select v-model="courseInfo.teacherId" placeholder="请选择">
+        <el-select v-model="courseInfo.teacher.name" placeholder="请选择">
           <el-option
             v-for="teacher in teacherList"
             :key="teacher.id"
@@ -134,7 +134,7 @@ export default {
       courseInfo: {
         price: 0,
         lessonNum: 1,
-        subjectId:""
+        subjectParentId: "",
       },
       teacherList: [],
       subjectOneList: [],
@@ -151,9 +151,9 @@ export default {
       this.$router.push({ path: "/edu/course/chapter/" + this.courseId });
     },
     saveOrUpdate() {
-      console.log(this.courseInfo)
+      console.log(this.courseInfo);
       if (this.courseInfo.id) {
-        console.log(this.courseInfo.cover)
+        console.log(this.courseInfo.cover);
         this.update();
       } else {
         this.save();
@@ -191,7 +191,7 @@ export default {
       subjectAPI
         .getNestedTreeList()
         .then((response) => {
-          this.subjectOneList = response.data.items;
+          this.subjectOneList = response.data;
         })
         .catch((error) => {
           this.$message.error("获取课程分类失败!");
@@ -202,7 +202,7 @@ export default {
       teacherAPI
         .getAllTeacher()
         .then((response) => {
-          this.teacherList = response.data.items;
+          this.teacherList = response.data;
         })
         .catch((error) => {
           this.$message.error("获取课程分类失败!");
@@ -255,7 +255,6 @@ export default {
     getCourseInfo() {
       courseAPI.getCourseInfo(this.courseId).then((response) => {
         this.courseInfo = response.data;
-        
         subjectAPI.getNestedTreeList().then((response) => {
           this.subjectOneList = response.data;
           for (let i = 0; i < this.subjectOneList.length; i++) {
